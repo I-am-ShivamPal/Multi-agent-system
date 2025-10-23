@@ -10,39 +10,40 @@ This repository is structured for a clean handover to UI/UX and integration team
 
 The system is designed with a clean separation of concerns. A central main.py orchestrator controls the simulation, while modular agents, trainers, and dashboards live in their own packages. Communication and state are managed through a series of structured log files in the /logs directory.
 
-/
-├── agents/
-│   ├── __init__.py
-│   ├── deploy_agent.py         # Logs deployment attempts
-│   ├── issue_detector.py       # Detects failures (crash, latency, anomaly)
-│   ├── uptime_monitor.py       # Logs UP/DOWN status
-│   └── auto_heal_agent.py      # Executes the healing actions (the "engine")
-│
-├── rl/
-│   ├── __init__.py
-│   └── rl_trainer.py           # The "brain" (Q-learning, policy, learning logic)
-│
-├── feedback/
-│   ├── __init__.py
-│   └── feedback_handler.py     # Handles the terminal-based user feedback prompt
-│
-├── dashboard/
-│   ├── __init__.py
-│   └── control_board.py        # The Streamlit monitoring dashboard
-│
-├── dataset/
-│   ├── student_scores.csv      # Sample data
-│   └── patient_health.csv      # Sample data
-│
-├── logs/
-│   ├── (all log files are generated here)
-│
-├── main.py                     # The main script to run the simulation
-├── utils.py                    # Shared functions (simulate data change, trigger deploy)
-├── dashboard.py                # The dummy app that is "deployed"
-├── mcp_stub.py                 # Placeholder for JSON-based message passing
-├── README.md                   # This file
-└── requirements.txt            # Project dependencies
+### 1. The Root Folder (The Factory Floor)
+This is the main control center where you start the simulation and find the core pieces.
+
+* `main.py`: This is the **Factory Manager**. You run this one file to start the entire simulation. It tells all the agents what to do and in what order.
+* `utils.py`: This is the **Toolbox**. It holds shared tools (like `simulate_data_change` or `trigger_dashboard_deployment`) that any agent can use to do its job.
+* `dashboard.py`: This is the **Product** being built. It's the dummy Streamlit dashboard that the factory is trying to deploy.
+* `mcp_stub.py`: This is a **Note for the Next Team** (for Ritesh). It's a placeholder that shows how your agents will send JSON messages.
+* `README.md`: The **Instruction Manual** for the whole project.
+* `requirements.txt`: The **Parts List** of all the software needed to run the factory.
+
+### 2. The `/agents/` Folder (The Workers)
+This folder is a department of specialized workers. Each one has a very specific job.
+
+* `deploy_agent.py`: The **Clerk**. Its *only* job is to write down every deployment (success or fail) into the `deployment_log.csv`.
+* `issue_detector.py`: The **Inspector**. Its job is to look at the data and logs to find out *what* went wrong (e.g., a crash, a data anomaly).
+* `uptime_monitor.py`: The **Status Tracker**. It keeps a simple log of whether the system is "UP" or "DOWN."
+* `auto_heal_agent.py`: The **Mechanic**. This agent has the "hands" and knows *how* to perform the actual fixes (retry, rollback, etc.).
+
+### 3. The `/rl/` Folder (The Brain)
+This folder contains the project's intelligence.
+
+* `rl_trainer.py`: The **Smart Agent** or "Brain." It *decides* which fix to use by looking at its past experience (the Q-Table). It then tells the "Mechanic" (`auto_heal_agent`) what to do.
+
+### 4. The `/feedback/` Folder (The Supervisor's Office)
+This is where you, the human, come in.
+
+* `feedback_handler.py`: This is your **Assistant**. Its job is to pause the simulation and ask for your expert opinion ("Accept" or "Reject") right in the terminal.
+
+### 5. The `/dashboard/` Folder (The Control Room)
+* `control_board.py`: This is your **Monitor**. It's the main Streamlit dashboard you run to *see* all the logs, watch the agent's performance, and check the system's uptime.
+
+### 6. The `/dataset/` and `/logs/` Folders
+* `dataset/`: This is the **Raw Material** (your health and student data files).
+* `logs/`: This is the **Filing Cabinet** where all the agents store their reports (all the `.csv` log files).
 
 
 (Note: The file structure diagram has been updated to reflect the final project, including rl_optimizer_agent.py which seems to be a legacy file, and the correct dashboard name dashboard.py.)
