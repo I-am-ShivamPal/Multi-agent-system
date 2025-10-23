@@ -12,40 +12,37 @@ The system is designed with a clean separation of concerns. A central main.py or
 
 /
 ├── agents/
+│   ├── __init__.py
 │   ├── deploy_agent.py         # Logs deployment attempts
 │   ├── issue_detector.py       # Detects failures (crash, latency, anomaly)
 │   ├── uptime_monitor.py       # Logs UP/DOWN status
 │   └── auto_heal_agent.py      # Executes the healing actions (the "engine")
-|
 │
 ├── rl/
+│   ├── __init__.py
 │   └── rl_trainer.py           # The "brain" (Q-learning, policy, learning logic)
 │
 ├── feedback/
+│   ├── __init__.py
 │   └── feedback_handler.py     # Handles the terminal-based user feedback prompt
 │
 ├── dashboard/
-│   └── control_board.py        # The Streamlit monitoring dashboard (renamed from dashboard.py)
+│   ├── __init__.py
+│   └── control_board.py        # The Streamlit monitoring dashboard
 │
 ├── dataset/
 │   ├── student_scores.csv      # Sample data
 │   └── patient_health.csv      # Sample data
 │
 ├── logs/
-│   ├── deployment_log.csv      # Log of all deployment attempts
-│   ├── issue_log.csv           # Log of all detected failures
-│   ├── uptime_log.csv          # Log of system UP/DOWN status changes
-│   ├── healing_log.csv         # Log of all healing actions taken
-│   ├── rl_log.csv              # The agent's "brain" (the Q-Table)
-│   ├── rl_performance_log.csv  # A log of every (state, action, reward) tuple
-│   └── user_feedback_log.csv   # A permanent history of all user feedback
+│   ├── (all log files are generated here)
 │
 ├── main.py                     # The main script to run the simulation
 ├── utils.py                    # Shared functions (simulate data change, trigger deploy)
-├── config.py                   # Central configuration for thresholds
-├── app_dashboard.py            # The dummy app that is "deployed"
+├── dashboard.py                # The dummy app that is "deployed"
 ├── mcp_stub.py                 # Placeholder for JSON-based message passing
-└── README.md                   # This file
+├── README.md                   # This file
+└── requirements.txt            # Project dependencies
 
 
 (Note: The file structure diagram has been updated to reflect the final project, including rl_optimizer_agent.py which seems to be a legacy file, and the correct dashboard name control_board.py.)
