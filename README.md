@@ -1,4 +1,4 @@
-Self-Healing CI/CD Pipeline Simulation
+**Self-Healing CI/CD Pipeline Simulation**
 
 This project simulates a self-healing CI/CD pipeline for a data dashboard using a multi-agent system. The system automatically deploys changes, detects a variety of failures (crashes, latency, data anomalies), and uses an intelligent agent to perform recovery actions.
 
@@ -6,7 +6,7 @@ The core of the project is an RL Optimizer Agent (RLTrainer) that uses Q-learnin
 
 This repository is structured for a clean handover to UI/UX and integration teams.
 
-🏛️ Project Architecture
+**🏛️ Project Architecture**
 
 The system is designed with a clean separation of concerns. A central main.py orchestrator controls the simulation, while modular agents, trainers, and dashboards live in their own packages. Communication and state are managed through a series of structured log files in the /logs directory.
 
@@ -45,9 +45,9 @@ The system is designed with a clean separation of concerns. A central main.py or
 └── requirements.txt            # Project dependencies
 
 
-(Note: The file structure diagram has been updated to reflect the final project, including rl_optimizer_agent.py which seems to be a legacy file, and the correct dashboard name control_board.py.)
+(Note: The file structure diagram has been updated to reflect the final project, including rl_optimizer_agent.py which seems to be a legacy file, and the correct dashboard name dashboard.py.)
 
-⚙️ Environment Setup
+**⚙️ Environment Setup**
 
 Prerequisites
 
@@ -57,25 +57,14 @@ pip and venv (standard Python libraries)
 
 Installation Guide
 
-Clone the Repository:
+Clone the Repository: https://github.com/I-am-ShivamPal/Multi-agent-system
 
-git clone <your-repository-url>
-cd <repository-name>
+git clone 
+cd Multi-agent-system
 
 
 Create a Virtual Environment:
 It is highly recommended to use a virtual environment to manage project dependencies.
-
-On macOS/Linux:
-
-python3 -m venv venv
-source venv/bin/activate
-
-
-On Windows:
-
-python -m venv venv
-.\venv\Scripts\activate
 
 
 Install Dependencies:
@@ -84,15 +73,15 @@ This project requires several Python packages. A requirements.txt file is provid
 pip install -r requirements.txt
 
 
-🚀 How to Run the Project (Demo Guide)
+**🚀 How to Run the Project (Demo Guide)**
 
 This project has two main parts that run at the same time in separate terminals: the Live Dashboard (for monitoring) and the Simulation Runner (for running tests).
 
 Terminal 1: Start the Monitoring Dashboard
 
-First, launch the Streamlit "Control Board" to monitor your system.
+First, launch the Streamlit " Dasshboard" to monitor your system.
 
-streamlit run dashboard/control_board.py
+streamlit run dashboard/dashboard.py
 
 
 This will open the dashboard in your web browser (usually at http://localhost:8501). Keep this terminal open.
