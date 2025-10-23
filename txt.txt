@@ -1,0 +1,25 @@
+STRATEGY FOR TRANING THE MODEL
+
+For a deployment_failure ➡️ the best action is usually retry_deployment.
+
+For a latency_issue ➡️ the best action is adjust_thresholds.
+
+For a data anomaly ➡️ the only effective action is restore_previous_version.
+
+For a crash_issue ➡️ the best action is retry_deployment.
+
+
+
+
+
+
+
+
+
+
+
+Crash (deployment_failure)	retry_deployment	✅ Accept
+Crash (deployment_failure)	restore_previous_version	✅ Accept
+Crash (deployment_failure)	adjust_thresholds	❌ Reject
+Slowdown (latency_issue)	adjust_thresholds	✅ Accept
+Bad Data (anomaly_issue)	restore_previous_version	✅ Accept

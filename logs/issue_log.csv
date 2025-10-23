@@ -1,0 +1,32 @@
+timestamp,failure_state,reason
+2025-10-21T10:58:03.132535,deployment_failure,Last deployment attempt failed.
+2025-10-21T13:38:34.384113,deployment_failure,Last deployment attempt failed.
+2025-10-21T13:47:43.120263,deployment_failure,Last deployment attempt failed.
+2025-10-21T13:53:13.423220,deployment_failure,Last deployment attempt failed.
+2025-10-21T13:56:27.210860,deployment_failure,Last deployment attempt failed.
+2025-10-21T14:03:00.430185,deployment_failure,Last deployment attempt failed.
+2025-10-21T20:11:03.394774,deployment_failure,Last deployment attempt failed.
+2025-10-21T20:49:25.168962,deployment_failure,Last deployment attempt failed.
+2025-10-21T21:03:35.635486,deployment_failure,Last deployment attempt failed.
+2025-10-21T21:06:22.842642,deployment_failure,Last deployment attempt failed.
+2025-10-21T21:08:10.064187,deployment_failure,Last deployment attempt failed.
+2025-10-21T21:11:39.302099,deployment_failure,Last deployment attempt failed.
+2025-10-21T21:12:45.714079,deployment_failure,Last deployment attempt failed.
+2025-10-22T06:12:39.274423,deployment_failure,Last deployment attempt failed.
+2025-10-22T06:19:02.076451,anomaly_health,High heart rate detected (150).
+2025-10-22T06:20:18.395486,anomaly_health,High heart rate detected (150).
+2025-10-22T06:21:52.037522,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T06:23:04.047806,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T06:24:05.477700,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T06:24:53.421408,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T06:25:52.557406,deployment_failure,Last deployment attempt failed.
+2025-10-22T06:26:37.820963,deployment_failure,Last deployment attempt failed.
+2025-10-22T11:33:50.529868,deployment_failure,Last deployment attempt failed.
+2025-10-22T11:40:09.551900,deployment_failure,Last deployment attempt failed.
+2025-10-22T11:41:16.591309,deployment_failure,Last deployment attempt failed.
+2025-10-22T11:46:13.649497,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T11:57:00.119745,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T14:46:39.012291,latency_issue,High latency detected: 20000.00 ms.
+2025-10-22T14:47:44.593639,deployment_failure,Last deployment attempt failed.
+2025-10-22T14:49:28.259128,deployment_failure,Last deployment attempt failed.
+2025-10-23T10:05:31.171763,deployment_failure,Last deployment attempt failed.

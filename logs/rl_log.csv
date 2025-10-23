@@ -1,0 +1,9 @@
+,retry_deployment,restore_previous_version,adjust_thresholds
+deployment_failure_UP,-0.1,-0.19,-0.1
+deployment_failure_DOWN,-0.11791,-0.19,-0.1
+latency_issue_UP,-0.1,-0.1,0.3
+latency_issue_DOWN,-0.1,-0.1,0.5700000000000001
+anomaly_score_UP,0.0,0.0,0.0
+anomaly_score_DOWN,0.0,0.0,0.0
+anomaly_health_UP,0.0,-0.1,0.0
+anomaly_health_DOWN,0.0,0.0,-0.1

@@ -1,0 +1,22 @@
+{
+  "agent": "IssueDetector",
+  "status": "Detected",
+  "data": {
+    "failure_state": "latency_issue",
+    "reason": "High latency detected: 21000.50 ms",
+    "dataset": "dataset/student_scores.csv"
+  },
+  "timestamp": "2025-10-22T14:29:23.305358"
+}
+----------------------------------------
+{
+  "agent": "RLOptimizer",
+  "status": "Resolved",
+  "data": {
+    "action_taken": "retry_deployment",
+    "result": "success",
+    "response_time_ms": 200
+  },
+  "timestamp": "2025-10-22T14:29:23.309520"
+}
+----------------------------------------

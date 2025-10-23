@@ -1,0 +1,42 @@
+python deployment.py --planner random
+
+python deployment.py --planner rl
+
+python deployment.py --planner rl --fail-type crash
+
+python deployment.py --planner rl --fail-type latency
+
+
+
+
+
+
+
+python deployment.py --planner rl --fail-type crash --dataset patient_health.csv
+
+python deployment.py --planner rl --fail-type latency --dataset patient_health.csv
+
+python deployment.py --planner rl --force-anomaly --dataset patient_health.csv
+
+
+
+
+
+
+python main.py
+
+python main.py --dataset dataset/patient_health.csv
+
+python main.py --planner rl --fail-type crash
+
+python main.py --planner rl --fail-type latency
+
+python main.py --planner rl --force-anomaly --dataset dataset/patient_health.csv
+
+python main.py --planner rl --force-anomaly --dataset dataset/patient_health.csv --train
+
+python main.py --planner rl --force-anomaly --dataset dataset/student_scores.csv --train
+
+python main.py --planner rl --fail-type latency --train
+
+python main.py --planner rl --fail-type crash --train
