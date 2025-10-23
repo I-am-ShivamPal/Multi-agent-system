@@ -8,40 +8,8 @@ from agents.uptime_monitor import UptimeMonitor
 from agents.auto_heal_agent import AutoHealAgent
 from rl.rl_trainer import RLTrainer 
 from utils import simulate_data_change, trigger_dashboard_deployment
-
-def get_user_feedback_from_terminal(state, action, outcome):
-    """Prompts the user for feedback directly in the terminal."""
-    print("\n" + "="*30)
-    print("✍️ USER FEEDBACK REQUIRED:")
-    print(f"  - Problem Detected: {state}")
-    print(f"  - Agent's Chosen Action: {action}")
-    print(f"  - System Outcome: {outcome}")
-    
-    while True:
-        response = input("Do you accept this action as a good solution for this problem? (y/n): ").lower().strip()
-        if response in ['y', 'yes']:
-            print(" -> Feedback recorded: ACCEPTED.")
-            return 'accepted'
-        elif response in ['n', 'no']:
-            print(" -> Feedback recorded: REJECTED.")
-            return 'rejected'
-        else:
-            print("Invalid input. Please enter 'y' for yes or 'n' for no.")
-
-def log_user_feedback(log_file, state, action, outcome, feedback):
-    """Logs the user's raw feedback to a permanent history file."""
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
-    header = ["timestamp", "state", "action", "system_outcome", "user_feedback"]
-    
-    file_exists = os.path.exists(log_file)
-    
-    timestamp = datetime.datetime.now().isoformat()
-    with open(log_file, 'a', newline='') as f:
-        writer = csv.writer(f)
-        if not file_exists or f.tell() == 0:
-            writer.writerow(header)
-        writer.writerow([timestamp, state, action, outcome, feedback])
-    print(f" -> User feedback permanently stored in {log_file}")
+from feedback.feedback_handler import get_user_feedback_from_terminal, log_user_feedback
+from config import THRESHOLDS # This line imports the thresholds
 
 # --- Main Simulation Loop ---
 if __name__ == "__main__":
@@ -61,27 +29,40 @@ if __name__ == "__main__":
     RL_LOG_FILE = os.path.join(LOG_DIR, "rl_log.csv")
     PERFORMANCE_LOG_FILE = os.path.join(LOG_DIR, "rl_performance_log.csv")
     ISSUE_LOG_FILE = os.path.join(LOG_DIR, "issue_log.csv")
-    # --- THIS IS THE FIX (Part 1) ---
-    USER_FEEDBACK_LOG_FILE = os.path.join(LOG_DIR, "user_feedback_log.csv") # New file for permanent storage
+    USER_FEEDBACK_LOG_FILE = os.path.join(LOG_DIR, "user_feedback_log.csv")
 
     # --- Agent Initialization ---
     deploy_agent = DeployAgent(log_file=DEPLOYMENT_LOG_FILE)
-    issue_detector = IssueDetector(log_file=DEPLOYMENT_LOG_FILE, data_file=args.dataset, issue_log_file=ISSUE_LOG_FILE)
+
+    # --- THIS IS THE FIX ---
+    # The configuration dictionary is correctly passed to the IssueDetector.
+    issue_detector = IssueDetector(
+        log_file=DEPLOYMENT_LOG_FILE, 
+        data_file=args.dataset, 
+        issue_log_file=ISSUE_LOG_FILE,
+        config=THRESHOLDS
+    )
+    # -------------------------
+    
     uptime_monitor = UptimeMonitor(timeline_file=UPTIME_LOG_FILE)
     
-    planner = AutoHealAgent(healing_log_file=HEALING_LOG_FILE)
+    planner = AutoHealAgent(healing_log_file=HEALING_LOG_FILE) # This agent executes the actions
     trainer = None
     if args.planner == 'rl':
         trainer = RLTrainer(rl_log_file=RL_LOG_FILE, performance_log_file=PERFORMANCE_LOG_FILE, train_mode=args.train)
         print("\n--- Using RL Trainer for action selection ---")
+    else:
+        print("\n--- Using Random Auto-Heal Agent ---")
 
-    # --- Simulation Logic ---
+    # 1. Simulate a data change
     simulate_data_change(args.dataset, force_anomaly=args.force_anomaly)
     
+    # 2. Trigger initial deployment
     should_fail = args.fail_type is not None or args.force_anomaly
     status, time_ms = trigger_dashboard_deployment(should_fail=should_fail, failure_type=args.fail_type)
     deploy_agent.log_deployment(args.dataset, status, time_ms)
 
+    # 3. Detect Issues and Heal if Necessary
     failure_state, reason = issue_detector.detect_failure_type()
     
     if failure_state != "no_failure":
@@ -99,12 +80,7 @@ if __name__ == "__main__":
         if trainer:
             base_reward = 1 if heal_status == 'success' else -1
             user_feedback = get_user_feedback_from_terminal(full_state, chosen_action, heal_status)
-            
-            # --- THIS IS THE FIX (Part 2) ---
-            # Log the raw user feedback to its own permanent file
             log_user_feedback(USER_FEEDBACK_LOG_FILE, full_state, chosen_action, heal_status, user_feedback)
-            
-            # The agent learns from the feedback
             trainer.learn(full_state, chosen_action, base_reward, user_feedback)
         
         deploy_agent.log_deployment(args.dataset, heal_status, heal_time, action_type=heal_type)
