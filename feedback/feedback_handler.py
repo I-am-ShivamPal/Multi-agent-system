@@ -1,5 +1,3 @@
-# rl/feedback_handler.py
-
 import csv
 import os
 from datetime import datetime
