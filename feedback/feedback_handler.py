@@ -1,48 +1,57 @@
-import csv
 import os
-from datetime import datetime
+import csv
+import datetime
 
-class FeedbackHandler:
-    def __init__(self, feedback_file):
-        self.feedback_file = feedback_file
-        if not os.path.exists(feedback_file):
-            with open(feedback_file, "w", newline="") as f:
-                writer = csv.writer(f)
-                writer.writerow(["timestamp", "state", "action", "outcome", "feedback_source", "feedback_value", "reward"])
+def get_user_feedback_from_terminal(state, action, outcome):
+    """
+    Prompts the user for feedback directly in the terminal.
+    
+    Args:
+        state (str): The failure state detected (e.g., 'deployment_failure_DOWN').
+        action (str): The action the agent chose (e.g., 'retry_deployment').
+        outcome (str): The result of the action ('success' or 'failure').
+        
+    Returns:
+        str: 'accepted' or 'rejected' based on user input.
+    """
+    print("\n" + "="*30)
+    print("✍️ USER FEEDBACK REQUIRED:")
+    print(f"  - Problem Detected: {state}")
+    print(f"  - Agent's Chosen Action: {action}")
+    print(f"  - System Outcome: {outcome}")
+    
+    while True:
+        response = input("Do you accept this action as a good solution for this problem? (y/n): ").lower().strip()
+        if response in ['y', 'yes']:
+            print(" -> Feedback recorded: ACCEPTED.")
+            return 'accepted'
+        elif response in ['n', 'no']:
+            print(" -> Feedback recorded: REJECTED.")
+            return 'rejected'
+        else:
+            print("Invalid input. Please enter 'y' for yes or 'n' for no.")
 
-    def log_feedback(self, state, action, outcome, feedback_source, feedback_value):
-        """Logs both user and simulated feedback with appropriate reward weighting."""
-        reward = self.calculate_reward(outcome, feedback_value)
-        with open(self.feedback_file, "a", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow([
-                datetime.now().isoformat(),
-                state,
-                action,
-                outcome,
-                feedback_source,
-                feedback_value,
-                reward
-            ])
-        return reward
+def log_user_feedback(log_file, state, action, outcome, feedback):
+    """
+    Logs the user's raw feedback to a permanent history file.
+    
+    Args:
+        log_file (str): Path to the feedback log (e.g., 'logs/user_feedback_log.csv').
+        state (str): The failure state.
+        action (str): The action taken.
+        outcome (str): The system's outcome ('success' or 'failure').
+        feedback (str): The user's feedback ('accepted' or 'rejected').
+    """
+    os.makedirs(os.path.dirname(log_file), exist_ok=True)
+    header = ["timestamp", "state", "action", "system_outcome", "user_feedback"]
+    
+    file_exists = os.path.exists(log_file)
+    
+    timestamp = datetime.datetime.now().isoformat()
+    with open(log_file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        if not file_exists or f.tell() == 0:
+            writer.writerow(header)
+        writer.writerow([timestamp, state, action, outcome, feedback])
+    print(f" -> User feedback permanently stored in {log_file}")
 
-    def calculate_reward(self, outcome, feedback_value):
-        """Dynamically adjusts reward."""
-        # base reward from outcome
-        base = 1 if outcome == 'success' else -1
-        if feedback_value == "positive":
-            base += 2
-        elif feedback_value == "neutral":
-            base += 0
-        elif feedback_value == "negative":
-            base -= 1
-        return base
-
-    def get_latest_feedback(self):
-        """Optional: read most recent feedback entry."""
-        try:
-            with open(self.feedback_file, "r") as f:
-                lines = f.readlines()
-            return lines[-1].strip().split(",") if len(lines) > 1 else None
-        except Exception:
-            return None
